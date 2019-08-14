@@ -5,4 +5,108 @@
 @import 'variables';
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+//@import '~bootstrap/scss/bootstrap';
+
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+
+html, body {
+    font-family: 'Roboto Condensed', sans-serif;
+  }
+  
+  #app {
+    font-family: 'Roboto Condensed', sans-serif;
+  }
+
+
+.demo-box {
+  border: 1px solid hsla(0,0%,57.3%,.1);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  margin-top: 3px;
+  position: relative;
+  transition: all .2s ease-in-out
+}
+
+.demo-box:hover {
+  box-shadow: 0 2px 18px rgba(0,0,0,.1);
+  border-color: rgba(0,0,0,0);
+  position: relative
+}
+
+.demo-box>.demo {
+  padding: 30px;
+  position: relative;
+  border-bottom: 2px dashed #eee
+}
+
+.demo-box>.desc {
+  border-bottom: 1px solid #eee;
+  padding: 10px 15px
+}
+
+.demo-box>pre {
+  transition: all .4s;
+  padding: 18px 5px;
+  margin: 0;
+  overflow: hidden;
+  max-height: 15px
+}
+
+.demo-box>pre.expand {
+  max-height: 10000px;
+  overflow-x: auto;
+  margin-bottom: 35px
+}
+
+.demo-box>pre.expand:hover+.expand-button {
+  color: #45b984
+}
+
+.demo-box>.expand-button {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  background-color: #fff;
+  transition: color .2s;
+  color: rgba(69,185,132,.5)
+}
+
+.demo-box>.expand-button:hover {
+  color: #45b984
+}
+
+.demo-box .demo-operate {
+  position: absolute;
+  right: 10px;
+  z-index: 3;
+  margin-top: 8px;
+  font-size: 13px
+}
+
+.demo-box .demo-operate span {
+  color: #777;
+  cursor: pointer;
+  transition: color .2s ease;
+  margin-left: 10px
+}
+
+.demo-box .demo-operate span:hover {
+  color: #45b984
+}
+
+.demo-box .demo-operate span:active {
+  color: #30815c
+}
+
+.demo-box .demo-operate span.h-pop-trigger .demo-box .demo-operate span {
+  color: #379469!important
+}
+
+.demo-box .demo-operate span[disabled] {
+  color: #999;
+  cursor: default
+}
