@@ -149,12 +149,12 @@
                         <vue-clip :options="albumModal.uploadOptions" :on-complete="addedAlbumFile">
                             <template slot="clip-uploader-action">
                                 <div>
-                                    <div class="dz-message">
-                                        <h5> Click !! </h5>
+                                    <div class="dz-message bg-primary-color">
+                                        <span class="bg-primary-color white-color">Insérer des images</span>
                                     </div>
                                 </div>
                             </template>
-                            <template slot="clip-uploader-body" scope="props">
+                            <template slot="clip-uploader-body" slot-scope="props">
                                 <div v-for="file in props.files" :key="file.name">
                                     <img v-bind:src="file.dataUrl" />
                                     {{ file.name }} {{ file.status }}
@@ -251,7 +251,7 @@ import { quillEditor } from 'vue-quill-editor'
 export default {
     data() {
         return {
-            isLoading: false,
+            isLoading:      false,
             labelPosition: 'right',
             labels: {
                 left: 'Label left aligned',
@@ -284,7 +284,10 @@ export default {
     },
     mixins: [ articleMixin, albumMixin, coursesMixin ],
     computed: {
-        ...mapGetters({ isRegistred: 'user/isRegistred', isAdmin: 'user/isAdmin' }),
+        ...mapGetters({ 
+            isRegistred: 'user/isRegistred', isAdmin: 'user/isAdmin', 
+            windowHeight: 'user/getWindowHeight', windowsWidth: 'user/getWindowWidth' 
+        }),
         reversedArticles() { 
             var NewObj = {}, keysArr = Object.keys(this.articles);
             for (var i = keysArr.length-1; i >= 0; i--) {

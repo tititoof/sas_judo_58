@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class PictureRepository
@@ -48,6 +49,17 @@ class PictureRepository
             $picture->save();
             return Answer::success(200, $picture->id);
         } catch(\Exception $exception) {
+            return Answer::error($exception);
+        }
+    }
+
+
+    public function carousel()
+    {
+        try {
+            $pictures    = DB::table('pictures')->orderBy('id', 'desc')->take(10)->get();
+            return Answer::success(200, $pictures);
+        } catch (\Exception $exception) {
             return Answer::error($exception);
         }
     }

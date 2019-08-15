@@ -7,8 +7,9 @@ const state = {
         isDebug:        false,
         profile:        null
     },
-    error: false,
-
+    error:          false,
+    windowWidth:    '',
+    windowHeight:   '',
     errorBasic: "Une erreur est survenue.",
     showLoader: false
 }
@@ -96,6 +97,12 @@ const getters = {
             });
             return state.errorBasic + errors;
         }
+    },
+    getWindowHeight: (state) => {
+        return state.windowHeight
+    },
+    getWindowWidth: (state) => {
+        return state.windowWidth
     }
 }
 
@@ -178,6 +185,12 @@ const actions = {
     },
     stopLoader({ state, commit, getters }) {
         commit(types.SET_LOADER, false)
+    },
+    setWindowHeight( { commit }, windowHeight ) {
+        commit(types.SET_WINDOW_HEIGHT, windowHeight)
+    },
+    setWindowWidth( { commit }, windowWidth) {
+        commit(types.SET_WINDOW_WIDTH, windowWidth)
     }
 }
 
@@ -200,6 +213,12 @@ const mutations = {
     },
     [types.SET_LOADER]: (state, value) => {
         state.showLoader = value
+    },
+    [types.SET_WINDOW_WIDTH]: (state, value) => {
+        state.windowWidth = value
+    },
+    [types.SET_WINDOW_HEIGHT]: (state, value) => {
+        state.windowHeight = value
     }
 }
 

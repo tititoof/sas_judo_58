@@ -1,15 +1,39 @@
 <template>
     <div style="background: rgb(255, 255, 255); padding: 24px; min-height: 380px;">
+        <Carousel :datas="carousel" :height="300" pageTheme="circle"></Carousel>
         <h2>Les news</h2>
+
         <div class="skeleton-demo-3-vue">
             <div class="h-list">
                 <div class="h-list-item" v-for="(item, index) in articles" :key="index">
                     <div class="demo-box">
                         <Skeleton active :loading="loading">
                             <div class="h-list-item-meta">
-                                <h4 class="h-list-item-title">{{ item.name }}</h4>
-                                <div class="h-list-item-desc" v-html="item.content"></div>
-                                <ImagePreview :datas="pictures[index]" @click="openPreview" />
+                                
+                                <Row :space="10">
+                                  <Cell :width="4">
+                                    <show-at breakpoint="mediumAndBelow">
+                                      <Avatar :src="item.image" shape="square" :width="75" v-width="250" :imageTop="5" fit="fill">
+                                        <div style="font-size: 18px;">{{ item.name }}</div>
+                                        <p class="dark2-color"></p>
+                                        <p class="dark2-color"></p>
+                                      </Avatar>
+                                    </show-at>
+                                    <show-at breakpoint="large">
+                                      <Avatar :src="item.image" shape="square" :width="75" v-width="450" :imageTop="5" fit="fill">
+                                        <div style="font-size: 18px;">{{ item.name }}</div>
+                                        <p class="dark2-color"></p>
+                                        <p class="dark2-color"></p>
+                                      </Avatar>
+                                    </show-at>
+                                  </Cell>
+                                </Row>
+                                <Row :space="9">
+                                  <div class="h-list-item-desc" v-html="item.content"></div>
+                                </Row>
+                                <Row :space="9">
+                                  <ImagePreview :datas="pictures[index]" @click="openPreview" />
+                                </Row>
                             </div>
                         </Skeleton>
                     </div>
@@ -23,6 +47,7 @@
 
 <script>
 import MugenScroll from 'vue-mugen-scroll'
+import {showAt, hideAt} from 'vue-breakpoints'
 export default {
   data() {
     return {
@@ -34,9 +59,20 @@ export default {
         menu: 1,
         page: 0,
         loading: false,
+        listeImages: [
+            'images/news/1.jpg', 'images/news/2.jpg', 'images/news/3.gif', 'images/news/4.gif',
+            'images/news/5.gif', 'images/news/6.jpg', 'images/news/7.gif', 'images/news/8.jpg',
+            'images/news/9.gif', 'images/news/10.gif'
+        ],
+        carousel: [
+          
+        ]
     };
   },
-  components: {MugenScroll},
+  computed: {
+    
+  },
+  components: { MugenScroll, hideAt, showAt},
   methods: {
     setImages() {
         const _self = this;
@@ -47,7 +83,7 @@ export default {
         article.albums.forEach(album => {
             album.pictures.forEach(picture => {
             let tempo_picture = {
-                thumbUrl: "/get/picture/" + picture.id + "/false",
+                thumbUrl: "/get/picture/" + picture.id + "",
                 url: "/get/picture/" + picture.id + "/false"
             }
             _self.pictures[index].push(tempo_picture);
@@ -55,22 +91,29 @@ export default {
         });
       });
     },
+    randomImage() {
+      const _self = this
+      let imagesLength = _self.listeImages.length
+      let randomNumber = Math.floor(Math.random() * Math.floor(imagesLength));
+      return _self.listeImages[randomNumber]
+    },
     openPreview(index = 0, data) {
         this.$ImagePreview(this.datas, index);
     },
     get() {
         const _self = this;
         _self.page += 1
-        console.log(_self.articles.length < _self.nbTotalArticles)
         if ( (_self.articles.length === 0) || (_self.articles.length < _self.nbTotalArticles) ) {
             _self.$http.get("api/visitor/menu/1/" + _self.page).then(response => {
                 let list_articles = response.data.data.articles
                 for (let article in list_articles) {
+                    list_articles[article].image = _self.randomImage()
                     _self.articles.push(list_articles[article])
                 }
                 _self.nbArticles = _self.articles.length
                 _self.nbTotalArticles = response.data.data.nbArticles
                 _self.setImages()
+                
                 _self.loading = false
             })
         }
@@ -78,7 +121,14 @@ export default {
     }
   },
   mounted() {
-    //this.get()
+    const _self = this
+    _self.$http.get('api/visitor/carousel').then( response => {
+      console.log(response)
+      response.data.data.forEach( (picture) => {
+        _self.carousel.push({ image: '/get/picture/' + picture.id + '/false'})
+      })
+      
+    })
   }
 };
 </script>
@@ -128,5 +178,14 @@ export default {
     font-size: 14px;
     line-height: 22px;
   }
+}
+.h-avatar-image-container .h-avatar-image {
+    position: absolute;
+    z-index: 1;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 70px;
+    width: 100%;
 }
 </style>

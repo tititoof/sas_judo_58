@@ -18,7 +18,7 @@ import VueClip from 'vue-clip'
 import { Icon }  from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
-const baseUrl = (process.env.NODE_ENV === 'production') ? 'https://judo-sas.fr' : 'http://localhost' 
+const baseUrl = (process.env.NODE_ENV === 'production') ? 'https://judo-sas.fr' : 'http://192.168.1.7' 
 
 // this part resolve an issue where the markers would not appear
 delete Icon.Default.prototype._getIconUrl;

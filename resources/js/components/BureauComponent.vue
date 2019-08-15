@@ -1,27 +1,68 @@
 <template>
-    <div>
-        <div style="background: rgb(255, 255, 255); padding: 24px; min-height: 380px;">
+    <div style="background: rgb(255, 255, 255); padding: 24px; min-height: 380px;">
         <h2>Le bureau</h2>
-        <div class="skeleton-demo-3-vue">
-            <div class="h-list">
-                <div class="h-list-item" v-for="(item, index) in articles" :key="index">
-                    <div class="demo-box">
-                        <Skeleton active :loading="loading">
-                            <div class="h-list-item-meta">
-                                <h4 class="h-list-item-title">{{ item.name }}</h4>
-                                <div class="h-list-item-desc" v-html="item.content"></div>
-                                <ImagePreview :datas="pictures[index]" @click="openPreview"/>
-                            </div>
-                        </Skeleton>
+        <show-at breakpoint="mediumAndBelow">
+            <section>
+                <div class="demo-box" v-for="human in listeBureau" :key="human.name">
+                    <Avatar :src="human.image" shape="square" :width="100" v-width="300" :imageTop="5" fit="fill">
+                        <div style="font-size: 1em;" class="text-ellipsis">
+                            <b>{{ human.type }}</b> <br/><i>{{ human.name }}</i>
+                        </div>
+                        <p class="dark2-color">
+                            <Row>
+                                <Cell width="2">
+                                    <fa :icon="faEnvelope"></fa>
+                                </Cell>
+                                <Cell width="20" v-html="human.address">
+                                </Cell>
+                            </Row>
+                        </p>
+                        <p class="dark2-color">
+                            <Row>
+                                <Cell width="2">
+                                    <fa :icon="faPhone"></fa>
+                                </Cell>
+                                <Cell width="20" v-html="human.phone">
+                                </Cell>
+                            </Row>
+                        </p>
+                        <p class="dark2-color">
+                            <Row>
+                                <Cell width="2">
+                                    <fa :icon="faAt"></fa>
+                                </Cell>
+                                <Cell width="20" v-html="human.email">
+                                </Cell>
+                            </Row>
+                        </p>
+                    </Avatar>
+                </div>
+            </section>
+        </show-at>
+        <show-at breakpoint="large">
+            <div class="skeleton-demo-3-vue">
+                <div class="h-list">
+                    <div class="h-list-item" v-for="(item, index) in articles" :key="index">
+                        <div class="demo-box">
+                            <Skeleton active :loading="loading">
+                                <div class="h-list-item-meta">
+                                    <h4 class="h-list-item-title">{{ item.name }}</h4>
+                                    <div class="h-list-item-desc" v-html="item.content"></div>
+                                </div>
+                            </Skeleton>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </show-at>
     </div>
-    </div>    
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import Fa             from 'vue-fa'
+import { faEnvelope, faPhone, faAt }     from '@fortawesome/free-solid-svg-icons'
+import {showAt, hideAt} from 'vue-breakpoints'
 export default {
     data() {
         return {
@@ -31,8 +72,133 @@ export default {
             nbPerPage:  5,
             menu:       1,
             page:       1,
-            loading:    true
+            loading:    true,
+            srcPresidente: 'images/bureau/presidente.gif',
+            listeBureau: [
+                {
+                    type:       'Présidente',
+                    name:       'MAINGOURD Patricia',
+                    image:      'images/bureau/presidente.gif',
+                    address:    '15, Rue A. Bauchant <br/> 37550 SAINT-AVERTIN',
+                    phone:      '02.47.27.10.01<br/>06.25.09.19.11',
+                    email:      'pmaingourd1@gmail.com',
+                },
+                {
+                    type:       'Secrétaire',
+                    name:       'NYSZAK Catherine',
+                    image:      'images/bureau/secretaire.gif',
+                    address:    '37550 SAINT-AVERTIN',
+                    phone:      '06.07.66.74.66',
+                    email:      'c.nyszak@orange.fr',
+                },
+                {
+                    type:       'Trésorière',
+                    name:       'CHESNAY Françoise',
+                    image:      'images/bureau/tresorier.gif',
+                    address:    '37200 TOURS',
+                    phone:      '06.07.66.74.66',
+                    email:      'chesfran37@orange.fr',
+                },
+                {
+                    type:       'Trésorier Adjoint',
+                    name:       'TOUCHARD Jean-Michel',
+                    image:      'images/bureau/tresorier-1.gif',
+                    address:    '37550 SAINT-AVERTIN',
+                    phone:      '02.47.28.91.32 <br/>06.78.62.80.86',
+                    email:      'jm.touchard@wanadoo.fr',
+                },
+                {
+                    type:       'Trésorier Adjoint',
+                    name:       'TYMCZUK Jean-Marc',
+                    image:      'images/bureau/tresorier-1.gif',
+                    address:    '14, Allée des Jardins <br/>37550 SAINT-AVERTIN',
+                    phone:      '02.47.27.77.32 <br/>06.80.45.86.01',
+                    email:      'jm.tymczuk@kami.fr',
+                },
+                {
+                    type:       'Correspondant Presse',
+                    name:       'JARAUD Francis',
+                    image:      'images/bureau/journaux.gif',
+                    address:    '28 Rue Toulouse Lautrec <br/>37550 SAINT-AVERTIN',
+                    phone:      '02.47.27.99.71 <br/>06.75.16.17.17',
+                    email:      'isafran@orange.fr',
+                },
+                {
+                    type:       'Référent site',
+                    name:       'HARTMANN Christophe',
+                    image:      'images/bureau/informatique.gif',
+                    address:    '4 Rue Auguste Fouquet <br/>37550 SAINT-AVERTIN',
+                    phone:      '06.65.71.19.75',
+                    email:      'chartmann.35@gmail.com',
+                },
+                {
+                    type:       'Membre du bureau',
+                    name:       'CHAUVIN Claude',
+                    image:      'images/bureau/employe.gif',
+                    address:    '19 Rue de la Ricottière <br/>37170 CHAMBRAY LES TOURS',
+                    phone:      '02.47.27.96.08<br/>06.09.43.23.35',
+                    email:      'claude_cha@yahoo.fr',
+                },
+                {
+                    type:       'Membre du bureau',
+                    name:       'MAILLET Alain',
+                    image:      'images/bureau/employe.gif',
+                    address:    '37550 SAINT-AVERTIN',
+                    phone:      '06.66.69.38.71',
+                    email:      'maillet.alain@bbox.fr',
+                },
+                {
+                    type:       'Enseignant',
+                    name:       'AUGER Pascal',
+                    image:      'images/bureau/enseignant.gif',
+                    address:    '9 Route de la Bouriolle<br/>37320 ESVRES',
+                    phone:      '02.47.26.52.55<br/>06.89.42.22.12',
+                    email:      'calou.1963@orange.fr',
+                },
+                {
+                    type:       'Enseignant',
+                    name:       'LEBOUCHER Alain',
+                    image:      'images/bureau/enseignant.gif',
+                    address:    'Les Régnières<br/>37320 ESVRES',
+                    phone:      '06.61.61.59.56',
+                    email:      'lebouchet.alain@wanadoo.fr',
+                },
+                {
+                    type:       'Enseignant',
+                    name:       'TYMCZUK Antoine',
+                    image:      'images/bureau/enseignant.gif',
+                    address:    '14, Allée des Jardins<br/>37550 SAINT-AVERTIN',
+                    phone:      '06.83.50.74.36',
+                    email:      '-',
+                },
+                {
+                    type:       'Coordinateur',
+                    name:       'MAINGOURD Olivier',
+                    image:      'images/bureau/coordinateur.gif',
+                    address:    '5, Rue Paul Boivinet<br/>37380 NOUZILLY',
+                    phone:      '06.70.30.86.17',
+                    email:      'o.maingourd@laposte.net',
+                },
+                {
+                    type:       'Animatrice',
+                    name:       'VOISIN Christine',
+                    image:      'images/bureau/animation.gif',
+                    address:    '37000 TOURS',
+                    phone:      '06.32.04.60.68',
+                    email:      '-',
+                }
+            ],
+            faEnvelope, faPhone, faAt
         }
+    },
+    components: {
+        Fa, hideAt, showAt
+    },
+    computed: {
+        ...mapGetters({ 
+            isRegistred: 'user/isRegistred', isAdmin: 'user/isAdmin',
+            windowHeight: 'user/getWindowHeight', windowsWidth: 'user/getWindowWidth'
+        }),
     },
     mounted() {
         const _self = this
@@ -148,5 +314,15 @@ table td[class*=col-],table th[class*=col-] {
 .table-responsive {
     overflow-x: auto;
     min-height: .01%
+}
+
+.h-avatar-image-container .h-avatar-image {
+    position: absolute;
+    z-index: 1;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 75px;
+    width: 100%;
 }
 </style>

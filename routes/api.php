@@ -42,7 +42,7 @@ Route::get('/get/picture/{id}', ['uses' => 'Admin\PictureController@show'])->mid
 Route::get('visitor/courses', ['uses' => 'Visitor\CourseController@index']);
 Route::post('visitor/contact', ['uses' => 'Visitor\ContactController@sendMail']);
 Route::get('visitor/judoevent', ['uses' => 'Visitor\JudoEventController@index']);
-
+Route::get('visitor/carousel', [ 'uses' => 'Visitor\ArticleController@carousel' ]);
 
 // Admin
 //Route::group(['middleware' => ['jwt.auth', 'can:is-admin']], function () {
@@ -83,6 +83,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     // Age Categories
     Route::resource('age_category', 'Admin\AgeCategoryController');
 
+    
     // Inscriptions
     Route::get('/inscriptions', 'Admin\MemberInscriptionController@index');
     Route::post('/inscriptions/load', 'Admin\MemberInscriptionController@load');
